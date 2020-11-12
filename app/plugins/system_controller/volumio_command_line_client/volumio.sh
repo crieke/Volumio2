@@ -63,6 +63,7 @@ updater userdata                   Wipes all user data
 updater testmode                   Enables or disables Test mode, allowing to receive beta builds
 updater cleanupdate                Updates to latest version and cleans user data, allowing a start like a newly flashed image
 updater restorevolumio             Delete all manually edited files from /volumio folder, restoring a pristine volumio core system
+internet                           Enables or disbles internet access, accepted commands: on | off
 "
 
 }
@@ -83,7 +84,7 @@ pull() {
 cd /
 echo "Stopping Volumio"
 sudo systemctl stop volumio.service
-sudo /bin/sh /volumio/app/plugins/system_controller/volumio_command_line_client/commands/pull.sh $@
+sudo /bin/sh /volumio/app/plugins/system_controller/volumio_command_line_client/commands/pull.sh "$@"
 
 echo "Pull completed, restarting Volumio"
 sudo systemctl start volumio.service
@@ -96,6 +97,10 @@ sh /volumio/app/plugins/system_controller/volumio_command_line_client/commands/d
 
 kernelsource() {
 sudo /bin/sh /volumio/app/plugins/system_controller/volumio_command_line_client/commands/kernelsource.sh
+}
+
+internet() {
+/volumio/app/plugins/system_controller/volumio_command_line_client/commands/internet.sh "$@"
 }
 
 case "$1" in
@@ -141,11 +146,17 @@ case "$1" in
                /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=random"
             fi
             ;;
-        startairplay)
-           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=startAirplay"
+        startairplayplayback)
+           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=startAirplayPlayback"
         ;;
-        stopairplay)
-           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=stopAirplay"
+        stopairplayplayback)
+           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=stopAirplayPlayback"
+        ;;
+        airplayactive)
+           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=airplayActive"
+        ;;
+        airplayinactive)
+           /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=airplayInactive"
         ;;
         usbattach)
            /usr/bin/curl "http://127.0.0.1:3000/api/v1/commands/?cmd=usbAudioAttach"
@@ -156,9 +167,6 @@ case "$1" in
         scanaudioinputs)
            /usr/bin/curl "http://127.0.0.1:3000/api/pluginEndpoint?endpoint=scanAudioInputs"
         ;;
-        vstart)
-            vstart
-            ;;
         vstart)
             vstart
             ;;
@@ -183,13 +191,16 @@ case "$1" in
             fi
             ;;
 	    pull)
-            pull $2 $3 $4
+            pull "$2" "$3" "$4"
             ;;
         dev)
         	dev
             ;;
 	    kernelsource)
 	        kernelsource
+            ;;
+            internet)
+                internet "$@"
             ;;
 	    logdump)
 	        /usr/local/bin/node /volumio/logsubmit.js "$2" nosubmit
@@ -225,7 +236,7 @@ correspondent folder in data"
                     echo "This command will update the plugin on your device"
                     echo ""
                 fi
-               /usr/local/bin/node /volumio/pluginhelper.js $2
+               /usr/local/bin/node /volumio/pluginhelper.js "$2"
             else
                 echo ""
                 echo "---- VOLUMIO PLUGIN HELPER ----"
@@ -242,7 +253,7 @@ correspondent folder in data"
             fi
             ;;
             updater)
-	        /usr/local/bin/node /volumio/update-helper.js $2
+                /usr/local/bin/node /volumio/update-helper.js "$@"
             ;;
         *)
             doc

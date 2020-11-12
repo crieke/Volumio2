@@ -1,3 +1,4 @@
+/* eslint-disable */
 var fs = require('fs-extra');
 var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
@@ -246,11 +247,11 @@ function customize_package(pluginName, path, category) {
             {
                 type: 'input',
                 name: 'description',
-                message: 'Insert a brief description of your plugin (100 chars)',
+                message: 'Insert a brief description of your plugin (Maximum 200 characters)',
                 default: pluginName.sysName,
                 validate: function (desc) {
-                    if(desc.length > 100){
-                        return "please be brief";
+                    if(desc.length > 200){
+                        return "Description is too long. Use 200 characters maximum";
                     }
                     return true;
                 }
@@ -321,12 +322,12 @@ function finalizing(path, package) {
     if (fs.existsSync(process.cwd + '/package-lock.json')) {
         execSync("/bin/rm package-lock.json");
     }
-    execSync("/usr/local/bin/npm install");
+    execSync("/usr/local/bin/npm install --production");
     if (fs.existsSync(process.cwd + '/package-lock.json')) {
         execSync("/bin/rm package-lock.json");
     }
 
-    console.log("\nCongratulation, your plugin has been succesfully created!\n" +
+    console.log("\nCongratulation, your plugin has been successfully created!\n" +
         "You can find it in: " + path + "\n");
 }
 
@@ -362,7 +363,7 @@ function zip(){
                 if (fs.existsSync(process.cwd + '/package-lock.json')) {
                     execSync("/bin/rm package-lock.json");
                 }
-                execSync("/usr/local/bin/npm install");
+                execSync("/usr/local/bin/npm install --production");
                 if (fs.existsSync(process.cwd + '/package-lock.json')) {
                     execSync("/bin/rm package-lock.json");
                 }
@@ -551,7 +552,7 @@ function write_new_plugin(package, arch, plugins, index) {
             default: "",
             validate: function (desc) {
                 if(desc.length > 1000){
-                    return "please be brief";
+                    return "Description is too long. Use 1000 characters maximum";
                 }
                 return true;
             }
@@ -625,7 +626,7 @@ function update_desc_details(package, plugins, catIndex, plugIndex, arch) {
             default: plugins.categories[catIndex].plugins[plugIndex].details,
             validate: function (desc) {
                 if(desc.length > 1000){
-                    return "please be brief";
+                    return "Description is too long. Use 1000 characters maximum";
                 }
                 return true;
             }
@@ -637,8 +638,8 @@ function update_desc_details(package, plugins, catIndex, plugIndex, arch) {
             ' (leave blank for default)',
             default: package.description,
             validate: function (desc) {
-                if(desc.length > 100){
-                    return "please be brief";
+                if(desc.length > 200){
+                    return "Description is too long. Use 200 characters maximum";
                 }
                 return true;
             }
@@ -689,10 +690,11 @@ function install(){
         socket.emit('installPlugin', {url: 'http://127.0.0.1:3000/plugin-serve/'
             + package.name + ".zip"})
         socket.on('installPluginStatus', function (data) {
-            console.log("Progress: " + data.progress + "\nStatus :" + data.message)
+            console.log("Progress: " + data.progress + "\nStatus :" + data.message + "\n" + data.advancedLog)
             if(data.message == "Plugin Successfully Installed"){
-                console.log("Done!");
-                socket.close()
+                console.log("Done! Plugin Successfully Installed");
+                socket.close();
+                process.exit(1);
             }
         })
     }
