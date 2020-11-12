@@ -124,7 +124,8 @@
     "TRACKS": "Titel",
     "UPDATING_MUSIC_DB_WAIT_MESSAGE": "Musik-Verzeichnis wird indiziert. Das System kann währenddessen stark verlangsamt reagieren und sollte darum bis zum Abschluss der Indizierung nicht genutzt werden. Die Indizierung ist abgeschlossen, wenn das Symbol in der linken unteren Ecke zum Stillstand gekommen ist.",
     "USERNAME": "Benutzername",
-    "WITH": "mit"
+    "WITH": "mit",
+    "PLEASE_WAIT": "Bitte warten"
   },
   "MAIN_MENU": {
     "ALARM": "Wecker",
@@ -191,7 +192,9 @@
     "WIRELESS_NETWORK_CONNECTION_SUCCESSFUL_PROCEED": "Bitte mit dem nächsten Schritt fortfahren",
     "WIRELESS_RESTART_ERROR": "Neustart des drahtlosen Netzwerk fehlgeschlagen: ",
     "WIRELESS_RESTART_SUCCESS": "Drahtloses Netzwerk erfolgreich neu gestartet",
-    "WIRELESS_RESTART_TITLE": "Drahtloses Netzwerk wird neu gestartet"
+    "WIRELESS_RESTART_TITLE": "Drahtloses Netzwerk wird neu gestartet",
+    "WIRELESS_NETWORK_CONNECTING_TO" : "Verbinde mit drahtlosem Netzwerk",
+    "WIRELESS_NETWORK_RESTART_AFTER_CONNECTION" : "Deine Verbindung wird nun getrennt. Bitte verbinde dich wieder mit deinem regulären drahtlosem Netzwerk, um im Anschluss dein Gerät dort vorzufinden."
   },
   "NETWORKFS": {
     "ALIAS_DOC": "Wähle ein Alias, unter dem dein Netzwerklaufwerk dargestellt wird",
